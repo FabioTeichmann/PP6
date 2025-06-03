@@ -33,6 +33,7 @@ In this exercise you will:
 * Several starter repos are available here:
   [https://github.com/orgs/STEMgraph/repositories?q=SSH%3A](https://github.com/orgs/STEMgraph/repositories?q=SSH%3A)
 
+
 ---
 
 > **Note:** Place all your solution files under the `solutions/` directory in your cloned repo.
@@ -98,13 +99,20 @@ Place your completed `print.sh` in `solutions/` and commit. Then link it here:
 
 ```
 [print.sh](https://github.com/YOUR_USERNAME/REPO_NAME/blob/main/solutions/print.sh)
+
+https://github.com/FabioTeichmann/MeinProjekt-gh/blob/main/solutions/print.sh
 ```
 
 #### Reflection Questions
 
 1. **What is the difference between `printf` and `echo` in Bash?**
+  echo gibt nur Text aus. printf ist präziser und erlaubt Formatierung (z. B. Zahlenformat, Farben, Variablenplatzierung).
 2. **What is the role of `~/.bashrc` in your shell environment?**
+   Diese Datei wird bei jedem Start einer Bash-Sitzung geladen. Sie konfiguriert das Terminal: Prompt, Aliase, Umgebungsvariablen usw.
 3. **Explain the difference between sourcing (`source ~/.bashrc`) and executing (`./print.sh`).**
+   source lädt Befehle in die aktuelle Shell → keine neue Shell.
+   ./print.sh startet ein separates Skript → eigene Shell-Umgebung.
+
 
 ---
 
@@ -155,14 +163,21 @@ _start:
 
 ```
 [print.s](https://github.com/YOUR_USERNAME/REPO_NAME/blob/main/solutions/print.s)
+https://github.com/FabioTeichmann/MeinProjekt-gh/blob/main/solutions/print.s
 ```
 
 #### Reflection Questions
 
 1. **What is a file descriptor and how does the OS use it?**
-2. **How can you obtain or duplicate a file descriptor for another resource (e.g., a file or socket)?**
-3. **What might happen if you use an invalid file descriptor in a syscall?**
+Ein File Descriptor ist eine Nummer, mit der das Betriebssystem geöffnete Dateien oder Ausgaben verwaltet. Z. B.:
+0 = stdin
+1 = stdout
+2 = stderr
 
+2. **How can you obtain or duplicate a file descriptor for another resource (e.g., a file or socket)?**
+   Mit dem dup- oder dup2-Systemaufruf oder Shell-Umleitungen
+3. **What might happen if you use an invalid file descriptor in a syscall?**
+Der sys_write-Aufruf schlägt fehl, und das Programm gibt einen Fehlercode zurück oder terminiert unerwarte
 ---
 
 ### Task 3: C Printing
@@ -195,13 +210,28 @@ int main(void) {
 
 ```
 [print.c](https://github.com/YOUR_USERNAME/REPO_NAME/blob/main/solutions/print.c)
+
+https://github.com/FabioTeichmann/MeinProjekt-gh/blob/main/solutions/print.c
 ```
 
 #### Reflection Questions
 
 1. **Use `objdump -d` on `print_c` to find the assembly instructions corresponding to your `printf` calls.**
+   Man sieht die zerlegte Assembler-Darstellung seines kompilierten Programms. Jedes printf wird in viele Instruktionen übersetzt (z. B. Aufrufe ins C-Standard-IO-System).
 2. **Why is the syntax written differently from GAS assembly? Compare NASM vs. GAS notation.**
+   GAS ist „näher an der Hardware“, C ist abstrakter. In C nutzt man Bibliotheken, in GAS direkte Syscalls.   
 3. **How could you use `fprintf` to write output both to `stdout` and to a file instead? Provide example code.**
+   Beispiel:
+   
+   #include <stdio.h>
+
+int main(void) {
+    FILE *f = fopen("output.txt", "w");
+    if (f) {
+        fprintf(stdout, "Hello to terminal\n");
+        fprintf(f, "Hello to file\n");
+        fclose(f);
+    }
 
 ---
 
